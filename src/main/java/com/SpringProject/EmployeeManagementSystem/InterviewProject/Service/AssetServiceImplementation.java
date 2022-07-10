@@ -1,5 +1,7 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Service;
 
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.AssetIdNotFound;
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.OrganisationIdNotFound;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Asset;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Organisation;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.AssetRepository;
@@ -23,7 +25,7 @@ public class AssetServiceImplementation implements AssetService {
 
     @Override
     public Asset saveAssets(Asset asset,int orgid) {
-        Organisation organisation= organisationRepository.findById(orgid).orElseThrow();
+        Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         asset.setOrganisation(organisation);
         return assetRepository.save(asset);
     }
@@ -35,13 +37,13 @@ public class AssetServiceImplementation implements AssetService {
 
     @Override
     public Asset getAssetsByFloor(int assetid) {
-        return assetRepository.findById(assetid).orElseThrow();
+        return assetRepository.findById(assetid).orElseThrow(()-> new AssetIdNotFound());
     }
 
     @Override
     public Asset updateAssets(Asset asset, int assetid, int orgid) {
-        Asset existingAsset = assetRepository.findById(assetid).orElseThrow();
-        Organisation organisation= organisationRepository.findById(orgid).orElseThrow();
+        Asset existingAsset = assetRepository.findById(assetid).orElseThrow(()-> new AssetIdNotFound());
+        Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         existingAsset.setName(asset.getName());
         existingAsset.setCount(asset.getCount());
         existingAsset.setOrganisation(organisation);
@@ -51,7 +53,7 @@ public class AssetServiceImplementation implements AssetService {
 
     @Override
     public void deleteAssets(int assetid) {
-        assetRepository.findById(assetid).orElseThrow();
+        assetRepository.findById(assetid).orElseThrow(()-> new AssetIdNotFound());
         assetRepository.deleteById(assetid);
     }
 }
