@@ -26,6 +26,10 @@ public class EmployeeServiceImplementation implements EmployeeService {
     public Employee saveEmployee(Employee employee, int orgid) {
         Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         employee.setOrganisation(organisation);
+        if(employee.getRole().equalsIgnoreCase("manager"))
+            employee.setRole("ROLE_MANAGER");
+        else
+            employee.setRole("ROLE_EMPLOYEE");
         return employeeRepository.save(employee);
     }
 
@@ -48,6 +52,10 @@ public class EmployeeServiceImplementation implements EmployeeService {
         existingEmployee.setLastname(employee.getLastname());
         existingEmployee.setEmail(employee.getEmail());
         existingEmployee.setPassword(employee.getPassword());
+        if(employee.getRole().equalsIgnoreCase("manager"))
+            existingEmployee.setRole("ROLE_MANAGER");
+        else
+            existingEmployee.setRole("ROLE_EMPLOYEE");
         existingEmployee.setDesignation(employee.getDesignation());
         existingEmployee.setSalary(employee.getSalary());
         existingEmployee.setOrganisation(organisation);
