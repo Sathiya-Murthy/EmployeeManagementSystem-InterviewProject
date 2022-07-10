@@ -1,5 +1,7 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Service;
 
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.EmployeeIdNotFound;
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.OrganisationIdNotFound;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Organisation;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,12 @@ public class OrganisationServiceImplementation implements OrganisationService{
 
     @Override
     public Organisation getOrganisationById(int orgid) {
-        return organisationRepository.findById(orgid).orElseThrow();
+        return organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
     }
 
     @Override
     public Organisation updateOrganisation(Organisation organisation, int orgid) {
-        Organisation existingOrganisation= organisationRepository.findById(orgid).orElseThrow();
+        Organisation existingOrganisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         existingOrganisation.setName(organisation.getName());
         existingOrganisation.setBranch(organisation.getBranch());
 
