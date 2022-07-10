@@ -1,5 +1,6 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Controller;
 
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.Error;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Asset;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,14 @@ public class AssetController {
         this.assetService = assetService;
     }
     @PostMapping("/{orgid}/add")
-    public ResponseEntity<Asset> saveAssets(@RequestBody Asset asset,@PathVariable int orgid){
+    public ResponseEntity<?> saveAssets(@RequestBody Asset asset,@PathVariable int orgid){
+        if(asset.getName().isEmpty())
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Error("Enter the name of asset"));
+
+
+
         return new ResponseEntity<Asset>(assetService.saveAssets(asset,orgid), HttpStatus.CREATED);
     }
 
@@ -29,7 +37,7 @@ public class AssetController {
     }
 
     @GetMapping("/get/{assetid}")
-    public ResponseEntity<Asset> getAssetsByFloor(@PathVariable int assetid) {
+    public ResponseEntity<?> getAssetsByFloor(@PathVariable int assetid) {
 
 
         return new ResponseEntity<Asset>(assetService.getAssetsByFloor(assetid), HttpStatus.OK);
