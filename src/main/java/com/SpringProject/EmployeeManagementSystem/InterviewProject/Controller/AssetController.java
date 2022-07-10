@@ -26,8 +26,18 @@ public class AssetController {
                     .badRequest()
                     .body(new Error("Enter the name of asset"));
 
+        try {
 
-
+            if(Integer.parseInt(asset.getCount())<=1){
+                return ResponseEntity
+                        .badRequest()
+                        .body(new Error("The count of the asset must be greater than Zero"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Error("The count should be an Integer"));
+        }
         return new ResponseEntity<Asset>(assetService.saveAssets(asset,orgid), HttpStatus.CREATED);
     }
 
@@ -44,7 +54,25 @@ public class AssetController {
     }
 
     @PutMapping("/{orgid}/update/{assetid}")
-    public ResponseEntity<Asset> updateAssets(@PathVariable int assetid, @RequestBody Asset asset,@PathVariable int orgid){
+    public ResponseEntity<?> updateAssets(@PathVariable int assetid, @RequestBody Asset asset,@PathVariable int orgid){
+        if(asset.getName().isEmpty())
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Error("Enter the name of asset"));
+
+        try {
+
+            if(Integer.parseInt(asset.getCount())<=1){
+                return ResponseEntity
+                        .badRequest()
+                        .body(new Error("The count of the asset must be greater than Zero"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new Error("The count should be an Integer"));
+        }
+
         return new ResponseEntity<Asset>(assetService.updateAssets(asset,assetid,orgid),HttpStatus.OK);
     }
     @DeleteMapping("/delete/{assetid}")
