@@ -14,7 +14,7 @@ public class Asset {
 
     private String name;
 
-    private Long count;
+    private String count;
 
     @JsonBackReference
     @ManyToOne
