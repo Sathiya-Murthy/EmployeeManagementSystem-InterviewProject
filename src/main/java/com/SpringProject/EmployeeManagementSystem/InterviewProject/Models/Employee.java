@@ -22,6 +22,8 @@ public class Employee {
 
     private String password;
 
+    private String role;
+
     private String designation;
 
     private long salary;
