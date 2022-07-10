@@ -1,5 +1,7 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Service;
 
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.EmployeeIdNotFound;
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.OrganisationIdNotFound;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Employee;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Organisation;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.EmployeeRepository;
@@ -22,7 +24,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     @Override
     public Employee saveEmployee(Employee employee, int orgid) {
-        Organisation organisation= organisationRepository.findById(orgid).orElseThrow();
+        Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         employee.setOrganisation(organisation);
         return employeeRepository.save(employee);
     }
@@ -34,13 +36,13 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(int empid) {
-        return employeeRepository.findById(empid).orElseThrow();
+        return employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
     }
 
     @Override
     public Employee updateEmployee(Employee employee, int empid, int orgid) {
-        Employee existingEmployee=employeeRepository.findById(empid).orElseThrow();
-        Organisation organisation= organisationRepository.findById(orgid).orElseThrow();
+        Employee existingEmployee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
+        Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
 
         existingEmployee.setFirstname(employee.getFirstname());
         existingEmployee.setLastname(employee.getLastname());
@@ -56,7 +58,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     @Override
     public void deleteEmployee(int empid) {
-        employeeRepository.findById(empid).orElseThrow();
+        employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
         employeeRepository.deleteById(empid);
     }
 }
