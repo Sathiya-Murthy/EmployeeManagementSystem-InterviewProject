@@ -196,10 +196,10 @@ public class EmployeeController {
                     .body(new Error("Enter and valid email address"));
         }
 
-        if(employeeRepository.existsByEmail(employee.getEmail())){
-            return ResponseEntity.badRequest()
-                    .body(new Error("This email address already exists"));
-        }
+//        if(employeeRepository.existsByEmail(employee.getEmail())){
+//            return ResponseEntity.badRequest()
+//                    .body(new Error("This email address already exists"));
+//        }
 
         if (employee.getPassword().length()>=8&&employee.getPassword().length()<=15){
             String password=employee.getPassword();
