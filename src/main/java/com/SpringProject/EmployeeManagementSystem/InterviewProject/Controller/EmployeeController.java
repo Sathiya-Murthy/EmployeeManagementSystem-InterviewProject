@@ -121,7 +121,9 @@ public class EmployeeController {
                     .body(new Error("The Password must be in the range of 8 to 15"));
         }
 
-
+        if(employee.getSalary()<5000)
+            return ResponseEntity.badRequest()
+                    .body(new Error("The Salary must minimum 5000 as per company policy"));
 
 
 
@@ -235,6 +237,10 @@ public class EmployeeController {
             return ResponseEntity.badRequest()
                     .body(new Error("The Password must be in the range of 8 to 15"));
         }
+
+        if(employee.getSalary()<=5000)
+            return ResponseEntity.badRequest()
+                    .body(new Error("The Salary must minimum 5000 as per company policy"));
 
         return new ResponseEntity<Employee>(employeeService.updateEmployee(employee,empid,orgid),HttpStatus.OK);
     }
