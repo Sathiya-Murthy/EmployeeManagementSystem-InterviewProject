@@ -7,6 +7,7 @@ import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Organi
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.EmployeeRepository;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class EmployeeServiceImplementation implements EmployeeService {
     @Autowired
     private OrganisationRepository organisationRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public EmployeeServiceImplementation(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
@@ -26,6 +30,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
     public Employee saveEmployee(Employee employee, int orgid) {
         Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         employee.setOrganisation(organisation);
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         if(employee.getRole().equalsIgnoreCase("manager"))
             employee.setRole("ROLE_MANAGER");
         else
@@ -51,7 +56,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
         existingEmployee.setFirstname(employee.getFirstname());
         existingEmployee.setLastname(employee.getLastname());
         existingEmployee.setEmail(employee.getEmail());
-        existingEmployee.setPassword(employee.getPassword());
+        existingEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
         if(employee.getRole().equalsIgnoreCase("manager"))
             existingEmployee.setRole("ROLE_MANAGER");
         else
