@@ -28,6 +28,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     @Override
     public Employee saveEmployee(Employee employee, int orgid) {
+
         Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
         employee.setOrganisation(organisation);
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
@@ -45,11 +46,13 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(int empid) {
+        Employee employee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
         return employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
     }
 
     @Override
     public Employee updateEmployee(Employee employee, int empid, int orgid) {
+
         Employee existingEmployee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
         Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
 

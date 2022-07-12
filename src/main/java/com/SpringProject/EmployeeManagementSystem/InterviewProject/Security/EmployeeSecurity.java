@@ -1,5 +1,6 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Security;
 
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.EmployeeIdNotFound;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Employee;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.EmployeeUserDetails;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.EmployeeRepository;
@@ -19,8 +20,7 @@ public class EmployeeSecurity implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Employee> employee =employeeRepository.findByEmail(email);
-        employee.orElseThrow();
-
+        employee.orElseThrow(()-> new EmployeeIdNotFound());
         return employee.map(EmployeeUserDetails::new).get();
     }
 }

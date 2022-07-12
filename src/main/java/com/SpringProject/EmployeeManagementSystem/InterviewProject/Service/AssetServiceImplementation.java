@@ -32,6 +32,9 @@ public class AssetServiceImplementation implements AssetService {
 
     @Override
     public List<Asset> getAllAssets() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentPrincipalName = authentication.getName();
+//        System.out.println(currentPrincipalName);
         return assetRepository.findAll();
     }
 
