@@ -2,15 +2,19 @@ package com.SpringProject.EmployeeManagementSystem.InterviewProject.Service;
 
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.EmployeeIdNotFound;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.OrganisationIdNotFound;
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.UnauthorizedException;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Employee;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Organisation;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.EmployeeRepository;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImplementation implements EmployeeService {
@@ -45,9 +49,18 @@ public class EmployeeServiceImplementation implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(int empid) {
+    public Employee getEmployeeById(int empid) throws UnauthorizedException {
         Employee employee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
-        return employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Employee AuthEmployee =employeeRepository.findByEmail(currentPrincipalName).orElseThrow(()-> new EmployeeIdNotFound());
+        //System.out.println(AuthEmployee.getRole());
+        if(employee.getEmail().equals(currentPrincipalName) || AuthEmployee.getRole().equals("ROLE_MANAGER")){
+            return employee;
+        }else {
+            throw new UnauthorizedException("You are unauthorized to get the employee details of the given id");
+        }
+        //return employee;
     }
 
     @Override

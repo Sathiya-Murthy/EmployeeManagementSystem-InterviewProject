@@ -40,7 +40,10 @@ public class AssetServiceImplementation implements AssetService {
 
     @Override
     public Asset getAssetsByFloor(int assetid) {
-        return assetRepository.findById(assetid).orElseThrow(()-> new AssetIdNotFound());
+        Asset asset=assetRepository.findById(assetid).orElseThrow(()-> new AssetIdNotFound());
+        //System.out.println(asset.);
+
+        return asset;
     }
 
     @Override

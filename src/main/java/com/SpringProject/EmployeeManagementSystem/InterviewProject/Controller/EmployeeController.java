@@ -1,6 +1,7 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Controller;
 
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.Error;
+import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.UnauthorizedException;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Employee;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.EmployeeRepository;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Service.EmployeeService;
@@ -136,7 +137,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/get/{empid}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int empid) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable int empid) throws UnauthorizedException {
         return new ResponseEntity<Employee>(employeeService.getEmployeeById(empid), HttpStatus.OK);
     }
 
