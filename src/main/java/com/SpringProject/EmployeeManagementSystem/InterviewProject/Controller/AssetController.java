@@ -1,6 +1,5 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Controller;
 
-import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.Error;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Asset;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +14,13 @@ import java.util.List;
 public class AssetController {
     @Autowired
     private AssetService assetService;
-
-    public AssetController(AssetService assetService) {
-        this.assetService = assetService;
-    }
     @PostMapping("/{orgid}/add")
     public ResponseEntity<?> saveAssets(@RequestBody Asset asset,@PathVariable int orgid){
-        if(asset.getName().isEmpty())
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Error("Enter the name of asset"));
-
-        try {
-
-            if(Integer.parseInt(asset.getCount())<=1){
-                return ResponseEntity
-                        .badRequest()
-                        .body(new Error("The count of the asset must be greater than Zero"));
-            }
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Error("The count should be an Integer"));
+        if(asset.getName().isEmpty()) {
+            return new ResponseEntity<String>("Enter the name of asset", HttpStatus.BAD_REQUEST);
+        }
+        if(asset.getCount()<=0){
+            return new ResponseEntity<String>("The asset count should not be empty and greater than zero", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Asset>(assetService.saveAssets(asset,orgid), HttpStatus.CREATED);
     }
@@ -49,30 +33,17 @@ public class AssetController {
     @GetMapping("/get/{assetid}")
     public ResponseEntity<?> getAssetsByFloor(@PathVariable int assetid) {
 
-
         return new ResponseEntity<Asset>(assetService.getAssetsByFloor(assetid), HttpStatus.OK);
     }
 
     @PutMapping("/{orgid}/update/{assetid}")
     public ResponseEntity<?> updateAssets(@PathVariable int assetid, @RequestBody Asset asset,@PathVariable int orgid){
-        if(asset.getName().isEmpty())
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Error("Enter the name of asset"));
-
-        try {
-
-            if(Integer.parseInt(asset.getCount())<=1){
-                return ResponseEntity
-                        .badRequest()
-                        .body(new Error("The count of the asset must be greater than Zero"));
-            }
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new Error("The count should be an Integer"));
+        if(asset.getName().isEmpty()) {
+            return new ResponseEntity<String>("Enter the name of asset", HttpStatus.BAD_REQUEST);
         }
-
+        if(asset.getCount()<=0){
+            return new ResponseEntity<String>("The asset count should not be empty and greater than zero", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<Asset>(assetService.updateAssets(asset,assetid,orgid),HttpStatus.OK);
     }
     @DeleteMapping("/delete/{assetid}")

@@ -1,6 +1,5 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Controller;
 
-import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.Error;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Organisation;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Service.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,11 @@ public class OrganisationController {
     @Autowired
     private OrganisationService organisationService;
 
-    public OrganisationController(OrganisationService organisationService) {
-        this.organisationService = organisationService;
-    }
-
     @PostMapping("/add")
-    public ResponseEntity<Organisation> saveOrganisation(@RequestBody Organisation organisation){
+    public ResponseEntity<?> saveOrganisation(@RequestBody Organisation organisation){
+        if(organisation.getName().isEmpty()||organisation.getBranch().isEmpty()){
+            return new ResponseEntity<String>("The above fields cannot be empty", HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<Organisation>(organisationService.saveOrganisation(organisation), HttpStatus.CREATED);
     }
@@ -39,8 +37,7 @@ public class OrganisationController {
     @PutMapping("/update/{orgid}")
     public ResponseEntity<?> updateOrganisation(@PathVariable int orgid,@RequestBody Organisation organisation){
         if(organisation.getName().isEmpty()||organisation.getBranch().isEmpty()){
-            return ResponseEntity.badRequest()
-                    .body(new Error("The Above fields cannot be empty"));
+            return new ResponseEntity<String>("The above fields cannot be empty", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Organisation>(organisationService.updateOrganisation(organisation,orgid),HttpStatus.OK);
     }

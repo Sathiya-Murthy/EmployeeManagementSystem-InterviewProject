@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class EmployeeServiceImplementation implements EmployeeService {
@@ -49,18 +49,18 @@ public class EmployeeServiceImplementation implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(int empid) throws UnauthorizedException {
-        Employee employee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        Employee AuthEmployee =employeeRepository.findByEmail(currentPrincipalName).orElseThrow(()-> new EmployeeIdNotFound());
-        //System.out.println(AuthEmployee.getRole());
-        if(employee.getEmail().equals(currentPrincipalName) || AuthEmployee.getRole().equals("ROLE_MANAGER")){
-            return employee;
-        }else {
-            throw new UnauthorizedException("You are unauthorized to get the employee details of the given id");
-        }
-        //return employee;
+    public Employee getEmployeeById(int empid)  {
+//        Employee employee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentPrincipalName = authentication.getName();
+//        Employee AuthEmployee =employeeRepository.findByEmail(currentPrincipalName).orElseThrow(()-> new EmployeeIdNotFound());
+//        //System.out.println(AuthEmployee.getRole());
+//        if(employee.getEmail().equals(currentPrincipalName) || AuthEmployee.getRole().equals("ROLE_MANAGER")){
+//            //return employee;
+//        }else {
+//            //throw new UnauthorizedException("You are unauthorized to get the employee details of the given id");
+//        }
+        return employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
     }
 
     @Override
@@ -84,6 +84,27 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
         return existingEmployee ;
     }
+
+//    @Override
+//    public Employee updateEmployeeByEmployee(Employee employee, int empid, int orgid) {
+//        Employee existingEmployee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
+//        Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentPrincipalName = authentication.getName();
+//        Employee AuthEmployee =employeeRepository.findByEmail(currentPrincipalName).orElseThrow(()-> new EmployeeIdNotFound());
+//        if(existingEmployee.getEmail().equals(currentPrincipalName)|| AuthEmployee.getRole().equals("ROLE_MANAGER"))
+//        {
+//          existingEmployee.setFirstname(employee.getFirstname());
+//          existingEmployee.setLastname(employee.getLastname());
+//          existingEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
+//          existingEmployee.setOrganisation(organisation);
+//          employeeRepository.save(existingEmployee);
+//          return existingEmployee ;
+//        }else {
+//            throw new UnauthorizedException("You are unauthorized to update the employee details of the given id");
+//        }
+        //return null;
+//    }
 
     @Override
     public void deleteEmployee(int empid) {
