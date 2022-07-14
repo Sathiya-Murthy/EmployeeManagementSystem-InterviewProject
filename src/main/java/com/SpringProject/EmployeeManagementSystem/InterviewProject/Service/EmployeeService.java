@@ -10,6 +10,5 @@ public interface EmployeeService {
     List<Employee> getAllEmployee();
     Employee getEmployeeById(int empid);
     Employee updateEmployee(Employee employee,int empid,int orgid);
-   // Employee updateEmployeeByEmployee(Employee employee,int empid,int orgid);
     void deleteEmployee(int empid);
 }
