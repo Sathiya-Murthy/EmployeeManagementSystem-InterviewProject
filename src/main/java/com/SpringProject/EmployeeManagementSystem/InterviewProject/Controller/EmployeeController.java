@@ -2,7 +2,6 @@ package com.SpringProject.EmployeeManagementSystem.InterviewProject.Controller;
 
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.EmployeeIdNotFound;
 
-import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.UnauthorizedException;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Employee;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Repository.EmployeeRepository;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Service.EmployeeService;
@@ -219,11 +218,7 @@ public class EmployeeController {
 
         return new ResponseEntity<Employee>(employeeService.updateEmployee(employee,empid,orgid),HttpStatus.OK);
     }
-//    @PutMapping("/{orgid}/update/by/employee/{empid}")
-//    public ResponseEntity<?> updateEmployeeByEmployee(@PathVariable int empid,@RequestBody Employee employee,@PathVariable int orgid) throws UnauthorizedException{
-//        return new ResponseEntity<Employee>(employeeService.updateEmployeeByEmployee(employee,empid,orgid),HttpStatus.OK);
-//
-//    }
+
     @DeleteMapping("/delete/{empid}")
     public ResponseEntity<String> deleteEmployee(@PathVariable int empid){
         employeeService.deleteEmployee(empid);

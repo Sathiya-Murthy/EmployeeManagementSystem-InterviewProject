@@ -23,19 +23,14 @@ public class UpdateEmployeeImplementation implements UpdateEmployeeService{
     public Employee updateEmployeeByEmployee(Employee employee, int empid, int orgid) {
         Employee existingEmployee=employeeRepository.findById(empid).orElseThrow(()-> new EmployeeIdNotFound());
         Organisation organisation= organisationRepository.findById(orgid).orElseThrow(()-> new OrganisationIdNotFound());
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentPrincipalName = authentication.getName();
-//        Employee AuthEmployee =employeeRepository.findByEmail(currentPrincipalName).orElseThrow(()-> new EmployeeIdNotFound());
-//        if(existingEmployee.getEmail().equals(currentPrincipalName)|| AuthEmployee.getRole().equals("ROLE_MANAGER"))
-//        {
+
           existingEmployee.setFirstname(employee.getFirstname());
           existingEmployee.setLastname(employee.getLastname());
-          existingEmployee.setEmail(employee.getEmail());
+          //existingEmployee.setEmail(employee.getEmail());
           existingEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
           existingEmployee.setOrganisation(organisation);
           employeeRepository.save(existingEmployee);
           return existingEmployee ;
-//        }
-//        return existingEmployee;
+
     }
 }

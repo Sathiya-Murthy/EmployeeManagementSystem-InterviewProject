@@ -1,6 +1,5 @@
 package com.SpringProject.EmployeeManagementSystem.InterviewProject.Service;
 
-import com.SpringProject.EmployeeManagementSystem.InterviewProject.Exception.UnauthorizedException;
 import com.SpringProject.EmployeeManagementSystem.InterviewProject.Models.Employee;
 
 import java.util.List;
